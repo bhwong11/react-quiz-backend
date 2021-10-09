@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 
 const QuizSchema = new mongoose.Schema({
     questions: {
-        type:[{
-            correct: Boolean,
-            question: String,
-        }],
+        type:[],
     },
     difficulty:{
         type:String,

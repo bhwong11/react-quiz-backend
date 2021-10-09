@@ -60,7 +60,7 @@ const show = async(req,res)=>{
 
 const update = async (req,res)=>{
     try{
-        const updatedQuiz = db.Quiz.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        const updatedQuiz = await db.Quiz.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!updatedQuiz){
             return res.status(400).json({
                 status:400,
