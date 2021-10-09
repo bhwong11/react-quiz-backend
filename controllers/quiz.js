@@ -126,6 +126,17 @@ const destroy = async(req,res)=>{
                 message:'could not find Quiz with that ID'
             })
         }
+        let score = 0;
+        if(deletedQuiz.difficulty==='easy'){
+            score=deletedQuiz.score * 1
+        }
+        if(deletedQuiz.difficulty==='medium'){
+            score=deletedQuiz.score * 5
+        }
+        if(deletedQuiz.difficulty==='hard'){
+            score=deletedQuiz.score * 10
+        }
+        const user = await db.User.findByIdAndUpdate(deletedQuiz.user,{$inc:{userScore:-score}},{new:true})
         return res.status(200).json({
             status:200,
             message:'success',
