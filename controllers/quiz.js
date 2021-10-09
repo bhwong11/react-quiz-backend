@@ -20,6 +20,18 @@ const index = async(req,res)=>{
 const create = async(req,res)=>{
     try{
         const newQuiz = await db.Quiz.create(req.body);
+        let score = 0;
+        if(newQuiz.difficulty==='easy'){
+            score=newQuiz.score * 1
+        }
+        if(newQuiz.difficulty==='medium'){
+            score=newQuiz.score * 5
+        }
+        if(newQuiz.difficulty==='hard'){
+            score=newQuiz.score * 10
+        }
+        const user = await db.User.findByIdAndUpdate(newQuiz.user,{$inc:{userScore:score}},{new:true})
+        console.log(user)
             return res.status(200).json({
                 status:200,
                 message:'success',

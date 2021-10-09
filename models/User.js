@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         select:false,
     },
+    userScore:{
+        type:Number,
+        default:0,
+    },
     signup_date:{
         type:Date,
         default:Date.now,
