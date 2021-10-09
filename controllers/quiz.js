@@ -72,6 +72,18 @@ const show = async(req,res)=>{
 
 const update = async (req,res)=>{
     try{
+        const previousQuiz = await db.Quiz.findById(req.params.id);
+        let previousScore = 0;
+        if(previousQuiz.difficulty==='easy'){
+            previousScore=previousQuiz.score * 1
+        }
+        if(previousQuiz.difficulty==='medium'){
+            previousScore=previousQuiz.score * 5
+        }
+        if(previousQuiz.difficulty==='hard'){
+            previousScore=previousQuiz.score * 10
+        }
+
         const updatedQuiz = await db.Quiz.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!updatedQuiz){
             return res.status(400).json({
@@ -79,6 +91,18 @@ const update = async (req,res)=>{
                 message:'could not find Quiz with that ID'
             })
         }
+        let newScore = 0;
+        if(updatedQuiz.difficulty==='easy'){
+            newScore=updatedQuiz.score * 1
+        }
+        if(updatedQuiz.difficulty==='medium'){
+            newScore=updatedQuiz.score * 5
+        }
+        if(updatedQuiz.difficulty==='hard'){
+            newScore=updatedQuiz.score * 10
+        }
+        const user = await db.User.findByIdAndUpdate(updatedQuiz.user,{$inc:{userScore:(newScore-previousScore)}},{new:true})
+
         return res.status(200).json({
             status:200,
             message:'success',
