@@ -4,7 +4,7 @@ const ctrl = require('../controllers');
 
 //routes
 router.get('/',ctrl.quiz.index);
-router.post('/',ctrl.quiz.new);
+router.post('/',ctrl.quiz.create);
 router.get('/:id',ctrl.quiz.show);
 router.put('/:id',ctrl.quiz.update);
 router.delete('/:id',ctrl.quiz.destroy);

@@ -3,14 +3,16 @@ const db = require('../models');
 const show = async(req,res)=>{
     try{
         const foundUser = await db.User.findById(req.params.id);
+        const userQuizzes = await db.Quiz.find({user:foundUser._id})
         if(foundUser){
-            res.status(200).json({
+            return res.status(200).json({
                 status:200,
                 message:'success',
-                user:foundUser
+                user:foundUser,
+                quizzes: userQuizzes
             })
         }else{
-            res.status(400).json({
+            return res.status(400).json({
                 status:400,
                 message:'could not find user with that ID'
             })
