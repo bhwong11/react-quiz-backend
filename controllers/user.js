@@ -3,8 +3,8 @@ const db = require('../models');
 const show = async(req,res)=>{
     try{
         const foundUser = await db.User.findById(req.params.id);
-        const userQuizzes = await db.Quiz.find({user:foundUser._id})
         if(foundUser){
+            const userQuizzes = await db.Quiz.find({user:foundUser._id})
             return res.status(200).json({
                 status:200,
                 message:'success',
@@ -17,6 +17,7 @@ const show = async(req,res)=>{
                 message:'could not find user with that ID'
             })
         }
+
     }catch(error){
         console.log(error)
         return res.status(500).json({
@@ -28,7 +29,7 @@ const show = async(req,res)=>{
 
 const update = async (req,res)=>{
     try{
-        const updatedUser = db.User.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        const updatedUser = await db.User.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!updatedUser){
             res.status(400).json({
                 status:400,
@@ -70,4 +71,10 @@ const destroy = async(req,res)=>{
             message:error,
         })
     }
+}
+
+module.exports ={
+    show,
+    update,
+    destroy,
 }

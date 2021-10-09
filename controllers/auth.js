@@ -5,14 +5,16 @@ require('dotenv').config();
 
 const register = async(req,res)=>{
     try{
-        const foundUserEmail = await db.User.find({email:req.body.email})
+        const foundUserEmail = await db.User.findOne({email:req.body.email})
+        console.log('FOUND USER',foundUserEmail)
         if(foundUserEmail){
             return res.status(400).json({
                 status:400,
                 message:'A user with that email already exist'
             })
         }
-        const foundUserUsername = await db.User.find({username:req.body.username})
+        const foundUserUsername = await db.User.findOne({username:req.body.username})
+        console.log('FOUND USERname',foundUserUsername)
         if(foundUserUsername){
             return res.status(400).json({
                 status:400,
