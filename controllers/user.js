@@ -2,7 +2,7 @@ const db = require('../models');
 
 const show = async(req,res)=>{
     try{
-        const foundUser = await db.User.findById(req.params.id);
+        const foundUser = await db.User.findById(req.userId);
         if(foundUser){
             const userQuizzes = await db.Quiz.find({user:foundUser._id})
 
@@ -53,7 +53,7 @@ const show = async(req,res)=>{
 
 const update = async (req,res)=>{
     try{
-        const updatedUser = await db.User.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        const updatedUser = await db.User.findByIdAndUpdate(req.userId,req.body,{new:true});
         if(!updatedUser){
             res.status(400).json({
                 status:400,
@@ -76,7 +76,7 @@ const update = async (req,res)=>{
 
 const destroy = async(req,res)=>{
     try{
-        const deletedUser = await db.User.findByIdAndDelete(req.params.id)
+        const deletedUser = await db.User.findByIdAndDelete(req.userId)
         if(!deletedUser){
             res.status(400).json({
                 status:400,
