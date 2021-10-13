@@ -59,10 +59,37 @@ const login = async (req,res)=>{
             const token = jwt.sign({_id:foundUser._id},process.env.SECRET,{
                 expiresIn:"1d",
             })
+
+            const userQuizzes = await db.Quiz.find({user:foundUser._id})
+
+            //quizes by difficulty
+            const easyQuizzes = userQuizzes.filter(quiz=>quiz.difficulty==='easy')
+            const mediumQuizzes = userQuizzes.filter(quiz=>quiz.difficulty==='medium')
+            const hardQuizzes = userQuizzes.filter(quiz=>quiz.difficulty==='hard')
+
+            //scores
+            let easyScore =0
+            let mediumScore =0
+            let hardScore =0
+            if(easyQuizzes.length>0){
+                easyScore = easyQuizzes.map(quiz=>quiz.score).reduce((a,c)=>a+c)
+            }
+            if(mediumQuizzes.length>0){
+                mediumScore = mediumQuizzes.map(quiz=>quiz.score).reduce((a,c)=>a+c)
+            }
+            if(hardQuizzes.length>0){
+                hardScore = hardQuizzes.map(quiz=>quiz.score).reduce((a,c)=>a+c)
+            }
+
+            //rank calculate
+            const completeScore = ((easyScore*1)+(mediumScore*5)+(hardScore*10))
     
             return res.status(200).json({
                 status:200,
                 message:"success",
+                user:foundUser,
+                quizzes: userQuizzes,
+                completeScore,
                 token,
             })
         }else{
