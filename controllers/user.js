@@ -1,5 +1,22 @@
 const db = require('../models');
 
+const index = async(req,res)=>{
+    try{
+        const users = await db.User.find({})
+        return res.status(200).json({
+            status:200,
+            message:'success',
+            users,
+        })
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            status:500,
+            message:error,
+        })
+    }
+}
+
 const show = async(req,res)=>{
     try{
         const foundUser = await db.User.findById(req.userId);
@@ -99,6 +116,7 @@ const destroy = async(req,res)=>{
 
 module.exports ={
     show,
+    index,
     update,
     destroy,
 }
