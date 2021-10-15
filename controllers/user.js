@@ -44,6 +44,10 @@ const show = async(req,res)=>{
 
             //rank calculate
             const completeScore = ((easyScore*1)+(mediumScore*5)+(hardScore*10))
+            
+            //find Rank Order
+            const allUsers = await db.User.find({})
+            const sortedUsernames = allUsers.sort((a,b)=>b.userScore-a.userScore).map(user=>user.username)
 
             return res.status(200).json({
                 status:200,
@@ -51,6 +55,7 @@ const show = async(req,res)=>{
                 user:foundUser,
                 quizzes: userQuizzes,
                 completeScore,
+                rank:sortedUsernames.indexOf(foundUser.username)+1,
             })
         }else{
             return res.status(400).json({
